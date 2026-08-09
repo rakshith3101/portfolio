@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#080808"/>
+  <circle cx="220" cy="220" r="90" fill="#121212" stroke="#555"/>
+  <text x="170" y="225" fill="#f4f1ea" font-family="Segoe UI, Arial" font-size="24">NLP</text>
+  <circle cx="480" cy="220" r="90" fill="#121212" stroke="#555"/>
+  <text x="430" y="225" fill="#f4f1ea" font-family="Segoe UI, Arial" font-size="24">Vision</text>
+  <circle cx="740" cy="220" r="90" fill="#121212" stroke="#555"/>
+  <text x="690" y="225" fill="#f4f1ea" font-family="Segoe UI, Arial" font-size="24">Edge AI</text>
+  <rect x="160" y="350" width="620" height="90" rx="20" fill="#101010" stroke="#555"/>
+  <text x="218" y="400" fill="#f4f1ea" font-family="Segoe UI, Arial" font-size="24">Research experiments and applied intelligence</text>
+</svg>
