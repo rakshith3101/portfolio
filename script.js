@@ -4,10 +4,16 @@ filters.forEach((button) => {
     filters.forEach((item) => item.classList.remove('active'));
     button.classList.add('active');
     const filter = button.dataset.filter;
-    document.querySelectorAll('.project-card').forEach((project) => {
+    const allProjects = Array.from(document.querySelectorAll('#work .project-card'));
+    const matchingProjects = allProjects.filter((project) => {
       const matches = filter === 'all' || (project.dataset.category || '').split(' ').includes(filter);
       project.classList.toggle('is-hidden', !matches);
+      return matches;
     });
+    window.activePortfolioFilter = filter;
+    if (window.projectSlider) {
+      window.projectSlider.setCards(matchingProjects);
+    }
   });
 });
 
@@ -106,6 +112,24 @@ workGrid.querySelectorAll('.project-card').forEach((card) => {
   card.dataset.category = primary;
 });
 const contact = document.querySelector('#contact');
+const heroStatus = document.querySelector('.hero .status-dot');
+if (heroStatus && heroStatus.nextSibling) heroStatus.nextSibling.nodeValue = ' AI Engineer · Bengaluru, India';
+const heroLede = document.querySelector('.hero-lede');
+if (heroLede) heroLede.textContent = 'I design and ship focused AI products across spatial intelligence, AI perception, deep learning, agentic systems, and cloud-native applications.';
+const buildLog = document.querySelector('.signal-top span:first-child');
+if (buildLog) buildLog.textContent = 'BUILD LOG / GARUDA V2';
+const focusTitle = document.querySelector('.signal-card h3');
+if (focusTitle) focusTitle.textContent = 'GPS-denied autonomy.';
+const focusStack = document.querySelector('.signal-card .mono');
+if (focusStack) focusStack.textContent = 'Webots / YOLO / ROS 2 / Neural Network';
+const principles = document.querySelectorAll('#approach .principles > div');
+const workingMethod = [
+  ['Think in systems', 'Start with the decision, constraints, and failure modes. Map the data, model, interface, and operating environment before choosing a tool.'],
+  ['Write the protocol', 'Make the system legible through explicit contracts: inputs, outputs, agent state, evaluation signals, traceable events, and clear hand-offs between modules.'],
+  ['Design, then make it work', 'Build the smallest useful loop, test it in a controlled environment, observe what fails, and iterate until the protocol survives contact with the real workflow.']
+];
+principles.forEach((item, index) => { if (workingMethod[index]) { item.querySelector('h3').textContent = workingMethod[index][0]; item.querySelector('p').textContent = workingMethod[index][1]; } });
+document.querySelectorAll('.brand, footer span:first-child').forEach((element) => { if (element.textContent.includes('RS/LAB')) element.remove(); });
 if (contact) {
   const message = contact.querySelector('p:not(.eyebrow)');
   if (message) message.textContent = 'I would be happy to collaborate. If you would like to know more about any project, feel free to contact me.';
@@ -140,3 +164,140 @@ edgeCard.className = 'project-card';
 edgeCard.dataset.category = 'deep-learning';
 edgeCard.innerHTML = '<div class="project-index">EDGE AI / DEPLOYMENT</div><div class="project-content"><h3>Quantization and Edge AI</h3><p>Lightweight model experiments focused on quantization and constrained inference for Raspberry Pi and simulated edge environments.</p><div class="meta-row"><span>Quantization</span><span>TensorFlow Lite</span><span>Raspberry Pi</span><span>Edge inference</span></div></div>';
 document.querySelector('#work .project-grid')?.appendChild(edgeCard);
+
+const voxelWorld = document.querySelector('.voxel-world');
+const voxelLegend = document.querySelector('.voxel-legend');
+if (voxelLegend) voxelLegend.innerHTML = '<p class="eyebrow">Read the machine</p><h3>Hover a block.<br>Follow the system.</h3>';
+if (voxelWorld) {
+  const voxelLegend = document.querySelector('.voxel-legend');
+  if (voxelLegend) voxelWorld.appendChild(voxelLegend);
+  const hotspots = document.createElement('div');
+  hotspots.className = 'voxel-hotspots';
+  const projectDetails = {
+    'hotspot-gps': { title: 'Garuda v2 — GPS-Denied Drone Autonomy', type: 'Spatial intelligence · Digital twin', body: 'A digital-twin direction for autonomous flight in GPS-denied environments. The system connects simulated-world state with SLAM-derived spatial information so a drone can reason about position, geometry, and navigation without relying only on global coordinates.', poc: 'Proof of concept: a simulated environment is updated from robotic spatial observations, creating a test surface for localization, mapping, and autonomous navigation.', stack: 'Python · Gazebo · SLAM · 3D spatial data · Simulation', links: [{ label: 'Spatial repository', url: 'https://github.com/rakshith3101/spatial-intelligence' }] },
+    'hotspot-autonomy': { title: 'Drone Autonomy Using VLA', type: 'Autonomous systems · Active build', body: 'A simulation-first drone autonomy system where visual and language inputs are translated into actions. The stack combines a Webots environment with an LLM action loop, speech-to-instruction input, WebSocket communication, custom controllers, and computer-vision modules.', poc: 'Proof of concept: a spoken or language-level instruction is routed through the action layer and executed in a simulated drone environment with perception and control modules.', stack: 'Webots · Gemini Flash · WebSockets · YOLO · Vosk · PyAudio · WebRTC VAD', links: [{ label: 'Open-source repository', url: 'https://github.com/rakshith3101/oss-model-hack' }] },
+    'hotspot-camera': { title: 'VoxelNet Threat Modelling', type: '3D perception · Deep learning', body: 'A 3D deep-learning pipeline that generates synthetic spatial scenes, converts point clouds into voxel grids, encodes points within each voxel, aggregates spatial features, and predicts 3D object position and dimensions for simulated threat detection.', poc: 'Proof of concept: synthetic point-cloud scenes are voxelized and passed through a VoxelNet-style feature encoder and detection pipeline, with the result connected to a simulated spatial environment.', stack: 'PyTorch · NumPy · 3D point clouds · Voxelization · Voxel feature encoding · 3D bounding boxes · Pygame', links: [{ label: 'VoxelNet pipeline', url: 'https://github.com/rakshith3101/spatial-intelligence/blob/main/stupidity/spatial_intelligence/threat_modelling/voxelnet_pipeline.py' }, { label: 'Threat modelling module', url: 'https://github.com/rakshith3101/spatial-intelligence/tree/main/stupidity/spatial_intelligence/threat_modelling' }] },
+    'hotspot-edge': { title: 'Edge AI for JARVIS', type: 'Edge inference · Model efficiency', body: 'An edge-AI direction focused on making intelligent applications practical on constrained hardware. The work explores quantization and lightweight inference for Raspberry Pi-style and simulated deployment environments.', poc: 'Proof of concept: a quantized model is prepared for constrained execution, reducing the deployment footprint while preserving the core inference workflow.', stack: 'Quantization · TensorFlow Lite · Raspberry Pi · Edge inference · Model optimization', links: [{ label: 'GitHub profile', url: 'https://github.com/rakshith3101' }] },
+    'hotspot-agent': { title: 'Multi-Agent Orchestration & Agentic AI', type: 'Agent systems · Workflow automation', body: 'A platform direction for coordinating specialized agents across recurring operational workflows. Agent state, execution traces, authenticated access, storage, and analytics turn individual models into observable systems that can be run and evaluated.', poc: 'Proof of concept: specialized agents are coordinated through stateful workflows, with tracing and execution logs providing visibility into how each task progresses.', stack: 'Python · LangGraph · LangFlow · LangSmith · SSO · Blob Storage · DevOps analytics', links: [{ label: 'Experiments repository', url: 'https://github.com/rakshith3101/experiments' }] },
+    'hotspot-rl': { title: 'Shadow LLM', type: 'LLM control loop · Reinforcement learning', body: 'An experimental shadow-model direction for comparing and improving action decisions around an autonomous system. It explores how an LLM can propose, inspect, and refine actions alongside a simulated control loop.', poc: 'Proof of concept: shadow action and evaluation scripts run alongside the drone stack to inspect decisions before they are promoted into the control path.', stack: 'Python · LLM APIs · Action planning · Simulation · Control evaluation', links: [{ label: 'Shadow LLM source', url: 'https://github.com/rakshith3101/oss-model-hack/blob/master/shadow_llm.py' }] },
+    'hotspot-agent-rl': { title: 'Dumb2Intel — LLM-Guided Pathfinding', type: 'LLM-as-a-Judge · Reinforcement learning', body: 'A grid-world pathfinding experiment that progresses from LLM-generated candidate paths to reward-based evaluation, LLM-as-a-Judge selection, and Group Relative Policy Optimization. Candidates are compared and iteratively refined based on relative performance.', poc: 'Proof of concept: candidate paths are generated, scored for valid movement and goal completion, judged by an LLM, and refined through GRPO-style group comparisons.', stack: 'Python · OpenRouter API · OpenAI API · LangChain · Reward functions · GRPO', links: [{ label: 'Dumb2Intel repository', url: 'https://github.com/rakshith3101/experiments/tree/main/dumb2intel' }] },
+    'hotspot-nasa': { title: 'Canopy — NASA + Sentinel-2 GeoAI', type: 'Spatial intelligence · Remote sensing', body: 'A Western Ghats spatial-intelligence project using NASA datasets and Sentinel-2 satellite imagery to study canopy and environmental structure through large-scale geospatial analysis.', poc: 'Proof of concept: satellite and geospatial data are prepared as the foundation for environmental observation, canopy mapping, and spatial representation.', stack: 'Python · NASA data · Sentinel-2 · Remote sensing · Spatial analysis · Computer vision', links: [{ label: 'Canopy project', url: 'https://github.com/rakshith3101/spatial-intelligence/tree/main/stupidity/canopy_detection' }, { label: 'Visualizations', url: 'https://github.com/rakshith3101/spatial-intelligence/tree/main/stupidity/visualizations' }] }
+  };
+  Object.entries(projectDetails).forEach(([className, detail]) => {
+    const label = `${detail.title} — ${detail.type}`;
+    const hotspot = document.createElement('a');
+    hotspot.className = `voxel-hotspot ${className}`;
+    hotspot.href = '#system-map';
+    hotspot.dataset.label = label;
+    hotspot.setAttribute('aria-label', label);
+    hotspot.addEventListener('mouseenter', () => {
+      window.clearTimeout(voxelWorld._detailTimer);
+      voxelWorld._detailTimer = window.setTimeout(() => {
+      const card = document.createElement('aside');
+      card.className = 'project-detail-card';
+      card.innerHTML = `<button class="detail-close" aria-label="Close project detail">×</button><p class="eyebrow">${detail.type}</p><h3>${detail.title}</h3><p>${detail.body}</p><p class="detail-poc"><strong>Proof of concept</strong><br>${detail.poc}</p><div class="detail-stack">${detail.stack.split(' · ').map((item) => `<span>${item}</span>`).join('')}</div><div class="detail-links">${detail.links.map((link) => `<a href="${link.url}" target="_blank" rel="noopener">${link.label} ↗</a>`).join('')}</div>`;
+      hotspot.addEventListener('click', (event) => event.preventDefault(), { once: true });
+      card.querySelector('.detail-close').addEventListener('click', () => { card.remove(); voxelWorld.classList.remove('project-focus'); });
+      voxelWorld.querySelector('.project-detail-card')?.remove();
+      voxelWorld.appendChild(card);
+      voxelWorld.classList.add('project-focus');
+      }, 180);
+    });
+    hotspots.appendChild(hotspot);
+  });
+  voxelWorld.appendChild(hotspots);
+  voxelWorld.addEventListener('click', (event) => {
+    if (!event.target.closest('.project-detail-card') && !event.target.closest('.voxel-hotspot')) {
+      voxelWorld.querySelector('.project-detail-card')?.remove();
+      voxelWorld.classList.remove('project-focus');
+    }
+  });
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.voxel-world')) {
+      voxelWorld.querySelector('.project-detail-card')?.remove();
+      voxelWorld.classList.remove('project-focus');
+    }
+  });
+  const scenery = document.createElement('div');
+  scenery.className = 'voxel-scenery';
+  const objects = [
+    ['tree tree-a', ''], ['tree tree-b', ''], ['tree tree-c', ''], ['tree tree-d', ''],
+    ['mountain mountain-a', ''], ['mountain mountain-b', ''], ['mountain mountain-c', ''],
+    ['water water-a', ''], ['water water-b', ''], ['house house-a', ''], ['tower tower-a', '']
+  ];
+  objects.forEach(([className]) => { const el = document.createElement('i'); el.className = `scene-object ${className}`; scenery.appendChild(el); });
+  voxelWorld.prepend(scenery);
+  const drone = voxelWorld.querySelector('.voxel-drone');
+  if (drone) {
+    const blocks = [
+      ['motor motor-a', 'Flight control / actuation'], ['motor motor-b', 'Flight control / actuation'],
+      ['motor motor-c', 'Flight control / actuation'], ['motor motor-d', 'Flight control / actuation'],
+      ['sensor sensor-a', 'Computer vision / perception'], ['sensor sensor-b', 'Speech-to-instruction module'],
+      ['sensor sensor-c', 'WebSocket command bridge'], ['sensor sensor-d', 'Telemetry and state'],
+      ['panel panel-a', 'Gemini Flash action planner'], ['panel panel-b', 'YOLO perception module'],
+      ['panel panel-c', 'Digital twin state'], ['panel panel-d', 'Autonomy test loop']
+    ];
+    blocks.forEach(([className, label]) => {
+      const block = document.createElement('a');
+      block.className = `drone-box ${className}`;
+      block.href = '#system-map';
+      block.dataset.label = label;
+      block.setAttribute('aria-label', label);
+      drone.appendChild(block);
+    });
+  }
+}
+
+// Two-view portfolio: the voxel story is default; the catalogue is an intentional toggle.
+const workSection = document.querySelector('#work');
+const signalCard = document.querySelector('.signal-card');
+if (workSection && signalCard) {
+  workSection.classList.add('normal-project-view');
+  const toggle = document.createElement('button');
+  toggle.className = 'mode-toggle';
+  toggle.type = 'button';
+  toggle.innerHTML = '<span class="toggle-icon">↔</span> Normal view';
+  document.querySelector('#system-map .section-heading')?.appendChild(toggle);
+  const sliderGrid = workSection.querySelector('.project-grid');
+  const cards = sliderGrid ? Array.from(sliderGrid.querySelectorAll('.project-card')) : [];
+  let current = 0;
+  let activeCards = cards.slice();
+  const controls = document.createElement('div');
+  controls.className = 'slider-controls';
+  controls.innerHTML = '<button type="button" data-slide="prev" aria-label="Previous project">←</button><span class="slide-count"></span><button type="button" data-slide="next" aria-label="Next project">→</button><button type="button" class="back-to-drone">Return to drone ↗</button>';
+  workSection.querySelector('.section-heading')?.appendChild(controls);
+  const renderSlide = () => {
+    cards.forEach((card) => card.classList.remove('slide-active'));
+    if (activeCards.length) activeCards[current]?.classList.add('slide-active');
+    const count = controls.querySelector('.slide-count');
+    if (count) count.textContent = activeCards.length ? `${String(current + 1).padStart(2, '0')} / ${String(activeCards.length).padStart(2, '0')}` : '00 / 00';
+  };
+  window.projectSlider = {
+    setCards(nextCards) {
+      activeCards = nextCards;
+      current = 0;
+      renderSlide();
+    },
+    syncFromFilter() {
+      activeCards = cards.filter((card) => !card.classList.contains('is-hidden'));
+      current = 0;
+      renderSlide();
+    }
+  };
+  controls.addEventListener('click', (event) => {
+    const action = event.target.closest('[data-slide]')?.dataset.slide;
+    if (action && activeCards.length) current = action === 'next' ? (current + 1) % activeCards.length : (current - 1 + activeCards.length) % activeCards.length;
+    if (event.target.closest('.back-to-drone')) toggle.click();
+    renderSlide();
+  });
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('normal-project-mode');
+    toggle.innerHTML = document.body.classList.contains('normal-project-mode') ? '<span class="toggle-icon">◈</span> Drone view' : '<span class="toggle-icon">↔</span> Normal view';
+    if (document.body.classList.contains('normal-project-mode')) {
+      window.projectSlider.syncFromFilter();
+      workSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    else document.querySelector('#system-map')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  renderSlide();
+}
