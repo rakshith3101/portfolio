@@ -140,3 +140,20 @@ edgeCard.className = 'project-card';
 edgeCard.dataset.category = 'deep-learning';
 edgeCard.innerHTML = '<div class="project-index">EDGE AI / DEPLOYMENT</div><div class="project-content"><h3>Quantization and Edge AI</h3><p>Lightweight model experiments focused on quantization and constrained inference for Raspberry Pi and simulated edge environments.</p><div class="meta-row"><span>Quantization</span><span>TensorFlow Lite</span><span>Raspberry Pi</span><span>Edge inference</span></div></div>';
 document.querySelector('#work .project-grid')?.appendChild(edgeCard);
+
+const voxelWorld = document.querySelector('.voxel-world');
+if (voxelWorld) {
+  const field = document.createElement('div');
+  field.className = 'voxel-field';
+  for (let i = 0; i < 150; i += 1) {
+    const block = document.createElement('i');
+    block.className = 'voxel-block';
+    block.style.left = `${(i * 37) % 98}%`;
+    block.style.top = `${8 + ((i * 53) % 82)}%`;
+    block.style.setProperty('--size', `${6 + (i % 4) * 4}px`);
+    block.style.setProperty('--shade', i % 5 === 0 ? '#303030' : i % 3 === 0 ? '#202020' : '#151515');
+    block.style.setProperty('--delay', `${(i % 12) * -0.3}s`);
+    field.appendChild(block);
+  }
+  voxelWorld.prepend(field);
+}
