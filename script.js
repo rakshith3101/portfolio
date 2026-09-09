@@ -121,3 +121,22 @@ if (contact) {
     actions.appendChild(medium);
   }
 }
+
+// Stable anchors for the voxel system map.
+const anchorTitles = [
+  ['canopy', 'project-canopy'], ['threat modelling', 'project-voxelnet'],
+  ['garuda', 'project-garuda'], ['spatial learning blocks', 'project-spatial'],
+  ['semantic mutation', 'project-semantic'], ['dumb2intel', 'project-rl'],
+  ['webots drone', 'project-drone']
+];
+document.querySelectorAll('#work .project-card').forEach((card) => {
+  const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+  const match = anchorTitles.find(([name]) => title.includes(name));
+  if (match) card.id = match[1];
+});
+const edgeCard = document.createElement('article');
+edgeCard.id = 'project-edge';
+edgeCard.className = 'project-card';
+edgeCard.dataset.category = 'deep-learning';
+edgeCard.innerHTML = '<div class="project-index">EDGE AI / DEPLOYMENT</div><div class="project-content"><h3>Quantization and Edge AI</h3><p>Lightweight model experiments focused on quantization and constrained inference for Raspberry Pi and simulated edge environments.</p><div class="meta-row"><span>Quantization</span><span>TensorFlow Lite</span><span>Raspberry Pi</span><span>Edge inference</span></div></div>';
+document.querySelector('#work .project-grid')?.appendChild(edgeCard);
